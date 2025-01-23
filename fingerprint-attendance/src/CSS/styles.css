@@ -1,0 +1,185 @@
+/* General styling */
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    margin: 0;
+    background: #f2f2f2;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    background-color: #1e1e2d;
+    color: #fff;
+    height: 100vh;
+    padding: 20px 0;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar li {
+    padding: 15px 20px;
+}
+
+.sidebar li a {
+    color: #fff;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+}
+
+.sidebar li a:hover {
+    background-color: #29293d;
+    border-radius: 8px;
+}
+
+.sidebar li a i {
+    margin-right: 15px;
+    font-size: 18px;
+}
+
+/* Content */
+.content {
+    padding: 20px;
+    flex-grow: 1;
+}
+
+/* Cards */
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.card {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: calc(11% - 16px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.card h3 {
+    margin: 0 0 12px;
+}
+
+.card p {
+    font-size: 18px;
+    margin: 0;
+}
+
+/* Pie chart */
+.pie {
+    --p: 20;
+    --b: 12px;
+    --c: darkred;
+    --w: 70px;
+    width: var(--w);
+    aspect-ratio: 1;
+    position: relative;
+    display: inline-grid;
+    margin: 5px 0;
+    place-content: center;
+    font-size: 12px;
+    font-weight: bold;
+    font-family: sans-serif;
+}
+
+.pie:before,
+.pie:after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+}
+
+.pie:before {
+    inset: 0;
+    background:
+        radial-gradient(farthest-side, var(--c) 98%, #0000) top/var(--b) var(--b) no-repeat,
+        conic-gradient(var(--c) calc(var(--p)*1%), #0000 0);
+    -webkit-mask: radial-gradient(farthest-side, #0000 calc(99% - var(--b)), #000 calc(100% - var(--b)));
+    mask: radial-gradient(farthest-side, #0000 calc(99% - var(--b)), #000 calc(100% - var(--b)));
+}
+
+.pie:after {
+    inset: calc(50% - var(--b)/2);
+    background: var(--c);
+    transform: rotate(calc(var(--p)*3.6deg)) translateY(calc(50% - var(--w)/2));
+}
+
+.animate {
+    animation: p 1s .5s both;
+}
+
+@keyframes p {
+    from {
+        --p: 0;
+    }
+}
+
+/* Simple Bar Chart */
+.simple-bar-chart {
+    --line-count: 10;
+    --line-color: currentcolor;
+    --line-opacity: 0.25;
+    --item-gap: 2%;
+    --item-default-color: #060606;
+    height: 10rem;
+    display: grid;
+    grid-auto-flow: column;
+    gap: var(--item-gap);
+    align-items: end;
+    padding-inline: var(--item-gap);
+    --padding-block: 1.5rem;
+    padding-block: var(--padding-block);
+    position: relative;
+    isolation: isolate;
+}
+
+.simple-bar-chart::after {
+    content: "";
+    position: absolute;
+    inset: var(--padding-block) 0;
+    z-index: -1;
+    --line-width: 1px;
+    --line-spacing: calc(100% / var(--line-count));
+    background-image: repeating-linear-gradient(to top, transparent 0 calc(var(--line-spacing) - var(--line-width)), var(--line-color) 0 var(--line-spacing));
+    box-shadow: 0 var(--line-width) 0 var(--line-color);
+    opacity: var(--line-opacity);
+}
+
+.simple-bar-chart > .item {
+    height: calc(1% * var(--val));
+    background-color: var(--clr, var(--item-default-color));
+    position: relative;
+    animation: item-height 1s ease forwards;
+}
+
+@keyframes item-height {
+    from {
+        height: 0;
+    }
+}
+
+.simple-bar-chart > .item > * {
+    position: absolute;
+    text-align: center;
+}
+
+.simple-bar-chart > .item > .label {
+    inset: 100% 0 auto 0;
+}
+
+.simple-bar-chart > .item > .value {
+    inset: auto 0 100% 0;
+}
