@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            margin: 0;
+            background: #f2f2f2;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #1e1e2d;
+            color: #fff;
+            height: 100vh;
+            padding: 20px 0;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar li {
+            padding: 15px 20px;
+        }
+
+        .sidebar li a {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-size: 16px;
+        }
+
+        .sidebar li a:hover {
+            background-color: #29293d;
+            border-radius: 8px;
+        }
+
+        .sidebar li a i {
+            margin-right: 15px;
+            font-size: 18px;
+        }
+
+        .content {
+            padding: 20px;
+            flex-grow: 1;
+        }
+
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: space-between;
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: calc(11% - 16px); /* Adjusted width for horizontal layout */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .card h3 {
+            margin: 0 0 12px;
+        }
+
+        .card p {
+            font-size: 18px;
+            margin: 0;
+        }
+
+        @property --p {
+            syntax: '<number>';
+            inherits: true;
+            initial-value: 0;
+        }
+
+        .pie {
+            --p: 20;
+            --b: 12px; /* Reduced size */
+            --c: darkred;
+            --w: 70px; /* Reduced size */
+            width: var(--w);
+            aspect-ratio: 1;
+            position: relative;
+            display: inline-grid;
+            margin: 5px 0;
+            place-content: center;
+            font-size: 12px; /* Reduced font size */
+            font-weight: bold;
+            font-family: sans-serif;
+        }
+
+        .pie:before,
+        .pie:after {
+            content: "";
+            position: absolute;
+            border-radius: 50%;
+        }
+
+        .pie:before {
+            inset: 0;
+            background:
+                radial-gradient(farthest-side, var(--c) 98%, #0000) top/var(--b) var(--b) no-repeat,
+                conic-gradient(var(--c) calc(var(--p)*1%), #0000 0);
+            -webkit-mask: radial-gradient(farthest-side, #0000 calc(99% - var(--b)), #000 calc(100% - var(--b)));
+            mask: radial-gradient(farthest-side, #0000 calc(99% - var(--b)), #000 calc(100% - var(--b)));
+        }
+
+        .pie:after {
+            inset: calc(50% - var(--b)/2);
+            background: var(--c);
+            transform: rotate(calc(var(--p)*3.6deg)) translateY(calc(50% - var(--w)/2));
+        }
+
+        .animate {
+            animation: p 1s .5s both;
+        }
+
+        .no-round:before {
+            background-size: 0 0, auto;
+        }
+
+        .no-round:after {
+            content: none;
+        }
+
+        @keyframes p {
+            from {
+                --p: 0;
+            }
+        }
+
+        .active {
+            background-color: #29293d;
+            border-radius: 8px;
+        }
+        .simple-bar-chart{
+  --line-count: 10;
+  --line-color: currentcolor;
+  --line-opacity: 0.25;
+  --item-gap: 2%;
+  --item-default-color: #060606;
+
+  height: 25rem;
+  display: grid;
+  grid-auto-flow: column;
+  gap: var(--item-gap);
+  align-items: end;
+  padding-inline: var(--item-gap);
+  --padding-block: 1.5rem; /*space for labels*/
+  padding-block: var(--padding-block);
+  position: relative;
+  isolation: isolate;
+}
+
+.simple-bar-chart::after{
+  content: "";
+  position: absolute;
+  inset: var(--padding-block) 0;
+  z-index: -1;
+  --line-width: 1px;
+  --line-spacing: calc(100% / var(--line-count));
+  background-image: repeating-linear-gradient(to top, transparent 0 calc(var(--line-spacing) - var(--line-width)), var(--line-color) 0 var(--line-spacing));
+  box-shadow: 0 var(--line-width) 0 var(--line-color);
+  opacity: var(--line-opacity);
+}
+.simple-bar-chart > .item{
+  height: calc(1% * var(--val));
+  background-color: var(--clr, var(--item-default-color));
+  position: relative;
+  animation: item-height 1s ease forwards
+}
+@keyframes item-height { from { height: 0 } }
+
+.simple-bar-chart > .item > * { position: absolute; text-align: center }
+.simple-bar-chart > .item > .label { inset: 100% 0 auto 0 }
+.simple-bar-chart > .item > .value { inset: auto 0 100% 0 }
+
+
+
+
+
+    </style>
+</head>
+
+<body>
+
+<div class="sidebar">
+    <ul>
+        <li class="active">
+            <a href="dashboard.html"><i class="fa-solid fa-gauge"></i>Dashboard</a>
+        </li>
+        <li>
+            <a href="reports.html"><i class="fa-solid fa-chart-bar"></i>Reports</a>
+        </li>
+        <li>
+            <a href="attendance.html"><i class="fa-solid fa-calendar-check"></i>Attendance</a>
+        </li>
+        <li>
+            <a href="leaves.html"><i class="fa-solid fa-umbrella-beach"></i>Leaves</a>
+        </li>
+        <li>
+            <a href="master-data.html"><i class="fa-solid fa-database"></i>Master Data</a>
+        </li>
+        <li>
+            <a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a>
+        </li>
+        <li>
+            <a href="help.html"><i class="fa-solid fa-circle-question"></i>Help</a>
+        </li>
+    </ul>
+</div>
+
+<div class="content">
+    <h1>Welcome to the Dashboard</h1>
+    <p>Select an option from the sidebar to get started.</p>
+
+    <div class="card-container">
+        <div class="card">
+            <h3>Total Employees</h3>
+            <p>5000</p>
+            <div class="pie" style="--p:100; --c:darkred;">100%</div>
+        </div>
+        <div class="card">
+            <h3>Checked In</h3>
+            <p>4500</p>
+            <div class="pie" style="--p:90; --c:lightgreen;">90%</div>
+        </div>
+        <div class="card">
+            <h3>Not Checked In</h3>
+            <p>500</p>
+            <div class="pie" style="--p:80; --c:orange;">80%</div>
+        </div>
+        <div class="card">
+            <h3>On Leave</h3>
+            <p>456</p>
+            <div class="pie" style="--p:79; --c:purple;">79%</div>
+        </div>
+        <div class="card">
+            <h3>Weekly Off</h3>
+            <p>145</p>
+            <div class="pie" style="--p:73; --c:darkblue;">73%</div>
+        </div>
+        <div class="card">
+            <h3>Holiday</h3>
+            <p>12</p>
+            <div class="pie" style="--p:75; --c:darkblue;">75%</div>
+        </div>
+        <div class="card">
+            <h3>Checked Out</h3>
+            <p>250</p>
+            <div class="pie" style="--p:65; --c:darkred;">65%</div>
+        </div>
+    </div>
+    <h1>Attendances year</h1>
+    <div class="simple-bar-chart">
+
+        <div class="item" style="--clr: #5EB344; --val: 80">
+            <div class="label">Label 1</div>
+            <div class="value">80%</div>
+        </div>
+
+        <div class="item" style="--clr: #FCB72A; --val: 50">
+            <div class="label">Label 2</div>
+            <div class="value">50%</div>
+        </div>
+
+        <div class="item" style="--clr: #F8821A; --val: 100">
+            <div class="label">Label 3</div>
+            <div class="value">100%</div>
+        </div>
+
+        <div class="item" style="--clr: #E0393E; --val: 15">
+            <div class="label">Label 4</div>
+            <div class="value">15%</div>
+        </div>
+
+        <div class="item" style="--clr: #963D97; --val: 1">
+            <div class="label">Label 5</div>
+            <div class="value">1%</div>
+        </div>
+
+        <div class="item" style="--clr: #069CDB; --val: 90">
+            <div class="label">Label 6</div>
+            <div class="value">90%</div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+
+</html>
